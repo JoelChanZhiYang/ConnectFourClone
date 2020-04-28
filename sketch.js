@@ -27,6 +27,7 @@ function mouseReleased(){
         makeMove(playerChoice);
         aiChoice = randomChoice(board); // choose the algorithm here
         makeMove(aiChoice);
+        evaluateBoard(board);
     }
 }
 
