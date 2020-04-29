@@ -25,8 +25,8 @@ function mouseReleased(){
     playerChoice = floor(mouseX/thickness)
     if (board[playerChoice].length < ROWS){  // checks whether the column is filled
         makeMove(playerChoice);
-        aiChoice = randomChoice(board); // choose the algorithm here
-        makeMove(aiChoice);
+        // aiChoice = randomChoice(board); // choose the algorithm here
+        // makeMove(aiChoice);
         evaluateBoard(board);
     }
 }

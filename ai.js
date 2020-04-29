@@ -13,104 +13,60 @@ function evaluateBoard(board){
     let out = 0;
     for (let column = 0; column < board.length; column++){
         for (let piece = 0; piece < board[column].length; piece++){
-            out += evaluatePosition(board, column, piece);
+            out += evaluatePiece(board, column, piece, turn);
         }
     }
-
-    color = turn == "red" ? 1 : -1; 
-    out *= color
     console.log(out)
     return out;
 }
 
 
-function evaluatePosition(board, x, y){
+function evaluatePiece(board, x, y , nextMove){
     let color = board[x][y] == "red" ? 1 : -1;
     let oneMultiplier = 1;
     let twoMultiplier = 2;
     let threeMultiplier = 5;
-    let possible = [1,1,1,1,1,1,1];
-    let canWinNextMove = false
+    let winMultiplier = 10000
+    let possible = [1, 1, 1, 1, 1, 1, 1];
+    let underneath = [false, false, false, false, false, false, false]
     if (x <= COLUMNS - 4){
         for (let i = 1; i <= 3; i++){
-            //testing horizontal
-            if (possible[0] && board[x + i][y] !== board[x][y] && board[x + i][y] || outside(x + i, y)){
-                possible[0] = 0;
-            } else if (possible[0] && board[x + i][y] === board[x][y]){
-                possible[0]++;
-            } else if (possible[0] == 3 && i === 3 && board[x+i].length === y){
-                canWinNextMove = true
-                // console.log("0")
-
+            if (directionalCheck(board, x, y, possible, x + i, y, 0)){
+                underneath[0] = true;
             }
 
-            if (possible[1] && board[x + i][y + i] !== board[x][y] && board[x + i][y + i] || outside(x + i, y + i)){
-                possible[1] = 0;
-            } else if (possible[1] && board[x + i][y + i] === board[x][y]){
-                possible[1]++;
-            } else if (possible[1] == 3 && i === 3 && board[x+i].length === y + i){
-                canWinNextMove = true
-                // console.log("1")
-                
+            if (directionalCheck(board, x, y, possible, x + i, y + i, 1)){
+                underneath[1] = true;
             }
- 
 
-            if (possible[2] && board[x + i][y - i] !== board[x][y] && board[x + i][y - i] || outside(x + i, y - i)){
-                possible[2] = 0;
-            } else if (possible[2] && board[x + i][y - i] === board[x][y]){
-                possible[2]++;
-            } else if (possible[2] == 3 && i === 3 && board[x + i].length === y - i){
-                canWinNextMove = true
-                // console.log("2")
+            if (directionalCheck(board, x, y, possible, x + i, y - i, 2)){
+                underneath[2] = true;
             }
         }
     } else {
-        for (let i =0; i < 3; i++){
-            possible[i] = 0
-        }
+        possible = [0, 0, 0, 1, 1, 1, 1];
     }
 
-    if (y <= ROWS){
+    if (y <= ROWS - 4){
         for (let i = 1; i <= 3; i++){
-            if (possible[3] && board[x][y + i] !== board[x][y] && board[x][y + i] || outside(x, y + i)){
-                possible[3] = 0;
-            } else if (possible[3] && board[x][y + i] === board[x][y]){
-                possible[3]++;
-            } else if (possible[3] == 3 && i === 3 && board[x].length === y + i){
-                canWinNextMove = true
-                // console.log("3")
+            if (directionalCheck(board, x, y, possible, x, y + i, 3)){
+                underneath[3] = true;
             }
         }
+    } else {
+        possible[3] = 0;
     }
 
     if (x >=3){
         for (let i = 1; i <= 3; i++){
-            //testing horizontal
-            if (possible[4] && board[x - i][y] !== board[x][y] && board[x - i][y] || outside(x - i, y)){
-                possible[4] = 0;
-            } else if (possible[4] && board[x - i][y] === board[x][y]){
-                possible[4]++;
-            } else if (possible[4] == 3 && i === 3 && board[x - i].length === y){
-                canWinNextMove = true
-                // console.log("4")
+            if (directionalCheck(board, x, y, possible, x - i, y, 4)){
+                underneath[4] = true;
             }
-
-            if (possible[5] && board[x - i][y + i] !== board[x][y] && board[x - i][y + i] || outside(x - i, y + i)){
-                possible[5] = 0;
-            } else if (possible[5] && board[x - i][y + i] === board[x][y]){
-                possible[5]++;
-            } else if (possible[5] == 3 && i === 3 && board[x - i].length === y + i){
-                canWinNextMove = true
-                // console.log("5")
+            if (directionalCheck(board, x, y, possible, x - i, y + i, 5)){
+                underneath[5] = true;
             }
-
-            if (possible[6] && board[x - i][y - i] !== board[x][y] && board[x - i][y - i] || outside(x - i, y - i)){
-                possible[6] = 0;
-            } else if (possible[6] && board[x - i][y - i] === board[x][y]){
-                possible[6]++;
-            } else if (possible[6] == 3 && i === 3 && board[x - i].length === y - i){
-                // console.log("6")
-                canWinNextMove = true
+            if (directionalCheck(board, x, y, possible, x - i, y - i, 6)){
+                underneath[6] = true;
             }
         }
     } else {
@@ -126,17 +82,30 @@ function evaluatePosition(board, x, y){
         } else if (number === 2){
             out += twoMultiplier * color;
         } else if (number === 3){
-            out += threeMultiplier * color;
+            if (underneath && board[x][y] == nextMove){
+                out += winMultiplier * color
+            } else {
+                out += threeMultiplier * color;
+            }
         } else if (number === 4){
-            out += 10000* color
+            out += 10000 * color
         }
     }
+    return out
+}
 
-    if (canWinNextMove){
-        out += 10000 * color
+
+
+function directionalCheck(board, x, y, possible, dx, dy, checkNo){
+    if (possible[checkNo]){
+        if (!board[dx][dy] && !outside(dx, dy)){
+            return board[dx].length === dy;
+        } else if (board[dx][dy] !== board[x][y] || outside(dx, dy)){
+            possible[checkNo] = 0
+        } else {
+            possible[checkNo]++
+        }
     }
-    console.log(x,y,out, possible)
-    return out;
 }
 
 
@@ -144,8 +113,4 @@ function outside(x, y){
     let evalX = x < 0 || x >= COLUMNS;
     let evalY = y < 0 || y >= ROWS;
     return evalX || evalY
-}
-
-function centerScore(){
-
 }
