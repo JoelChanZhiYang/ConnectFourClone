@@ -25,16 +25,17 @@ function mouseReleased(){
     playerChoice = floor(mouseX/thickness)
     if (board[playerChoice].length < ROWS){  // checks whether the column is filled
         makeMove(playerChoice);
-        // aiChoice = randomChoice(board); // choose the algorithm here
-        // makeMove(aiChoice);
-        evaluateBoard(board);
+        aiChoice = randomChoice(board); // choose the algorithm here
+        makeMove(aiChoice);
+        evaluateBoard(board, turn)
+        console.log(minimax(board, 2,  true), "best")
     }
 }
 
 function makeMove(x){
     if (!isGameOver){
         addPiece(turn, x);
-        if (checkBoard()){
+        if (checkBoard(board)){
             isGameOver = true
         } else{
             turn = turn === "red" ? "blue" : "red";
@@ -53,7 +54,7 @@ function addPiece(side, column){
     }
 }
 
-function checkBoard(){
+function checkBoard(board){
     for (let column = 0; column < board.length; column++){
         for (let piece = 0; piece < board[column].length; piece++){
             if (checkPiece(column, piece)){

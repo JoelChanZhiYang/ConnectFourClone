@@ -6,17 +6,60 @@ function randomChoice(board){
         }
     }
     return random(available);
-    // return 5;
+    // return 6;
 }
 
-function evaluateBoard(board){
+function minimax(board, depth, isMaximisingPlayer){
+    let available = []
+    for (i = 0; i < COLUMNS; i++){
+        if (board[i].length < 6){
+            available.push(i);
+        }
+    }
+
+    let thisTurn = isMaximisingPlayer ? "red": "blue"
+    if (depth == 0 || checkBoard(board)){
+
+        let score = evaluateBoard(board, thisTurn)
+        return score
+    }
+
+    if (isMaximisingPlayer){
+        let maxEval = -Infinity;
+        let bestColumn = null;
+        for (let column of available){
+            console.log(column, thisTurn)
+            board[column].push(thisTurn)
+            let eval = minimax(board, depth - 1, false)
+            maxEval = max(eval, maxEval);
+            board[column].pop()
+        }
+        return maxEval
+    }
+
+    else{
+        let minEval = Infinity;
+        let bestColumn = null;
+        for (let column of available){
+            board[column].push(thisTurn)
+            let eval = minimax(board, depth - 1, true)
+            minEval = min(eval, minEval);
+            board[column].pop()
+        }
+        return minEval
+    }
+
+}
+
+
+function evaluateBoard(board, turn){
     let out = 0;
     for (let column = 0; column < board.length; column++){
         for (let piece = 0; piece < board[column].length; piece++){
             out += evaluatePiece(board, column, piece, turn);
         }
     }
-    console.log(out)
+    // console.log(out)
     return out;
 }
 
