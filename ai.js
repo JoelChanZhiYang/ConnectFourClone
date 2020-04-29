@@ -6,10 +6,12 @@ function randomChoice(board){
         }
     }
     return random(available);
-    // return 6;
+    return 6;
 }
 
-function minimax(board, depth, isMaximisingPlayer){
+function minimax(board, depth, isMaximisingPlayer, first = true){
+    // console.log(board, depth, isMaximisingPlayer)
+
     let available = []
     for (i = 0; i < COLUMNS; i++){
         if (board[i].length < 6){
@@ -21,32 +23,50 @@ function minimax(board, depth, isMaximisingPlayer){
     if (depth == 0 || checkBoard(board)){
 
         let score = evaluateBoard(board, thisTurn)
+        // print(thisTurn, score,"score")
         return score
     }
 
     if (isMaximisingPlayer){
         let maxEval = -Infinity;
-        let bestColumn = null;
+        let bestColumn;
         for (let column of available){
-            console.log(column, thisTurn)
+            // console.log(column, thisTurn)
             board[column].push(thisTurn)
-            let eval = minimax(board, depth - 1, false)
+            let eval = minimax(board, depth - 1, false, false)
             maxEval = max(eval, maxEval);
+            if (eval == maxEval){
+                bestColumn = column
+            }
             board[column].pop()
         }
-        return maxEval
+        // print(maxEval,bestColumn, "max")
+        if (first){
+            return bestColumn
+        } else {
+            return maxEval
+        }
     }
 
     else{
         let minEval = Infinity;
-        let bestColumn = null;
+        let bestMinColumn;
         for (let column of available){
+            // console.log(column, thisTurn)
             board[column].push(thisTurn)
-            let eval = minimax(board, depth - 1, true)
+            let eval = minimax(board, depth - 1, true, false)
             minEval = min(eval, minEval);
+            if (eval == minEval){
+                bestMinColumn = column
+            }
             board[column].pop()
         }
-        return minEval
+        // print(minEval, bestMinColumn, "min")
+        if (first){
+            return bestMinColumn;
+        } else {
+            return minEval
+        }
     }
 
 }
@@ -117,23 +137,24 @@ function evaluatePiece(board, x, y , nextMove){
             possible[i] = 0
         }
     }
-
+    
     let out = 0;
-    for (let number of possible){
+    for (let [index, number] of possible.entries()){
         if (number === 1){
             out += oneMultiplier * color;
         } else if (number === 2){
             out += twoMultiplier * color;
         } else if (number === 3){
-            if (underneath && board[x][y] == nextMove){
-                out += winMultiplier * color
+            if (underneath[index] && board[x][y] == nextMove){
+                out += winMultiplier * color / 2
             } else {
                 out += threeMultiplier * color;
             }
         } else if (number === 4){
-            out += 10000 * color
+            out += winMultiplier * color
         }
     }
+    // print(x, y, possible, underneath, nextMove, out)
     return out
 }
 

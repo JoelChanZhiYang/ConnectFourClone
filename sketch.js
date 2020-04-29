@@ -25,10 +25,10 @@ function mouseReleased(){
     playerChoice = floor(mouseX/thickness)
     if (board[playerChoice].length < ROWS){  // checks whether the column is filled
         makeMove(playerChoice);
-        aiChoice = randomChoice(board); // choose the algorithm here
+        aiChoice = minimax(board, 4,  false); // choose the algorithm here
+        // console.log(aiChoice)
         makeMove(aiChoice);
-        evaluateBoard(board, turn)
-        console.log(minimax(board, 2,  true), "best")
+        // print(evaluateBoard(board, turn), turn, evaluateBoard(board, "red"))
     }
 }
 
