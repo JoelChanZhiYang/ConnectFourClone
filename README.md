@@ -31,5 +31,7 @@ For every piece, algorithm searches in 7 directions. There is no need to search 
 For the sake of demonstration, assume that we are only searching to the right of one particular piece.
 
 1. If the search space contain a different coloured piece or the search space is out of bounds, then a score of **0** is given.
+
 <img src = "./Assets/score0.png" style="width: 400px;"/>
-2. If the seerch space contains only empty spaces or pieces of the same colour, then
+
+2. If the seerch space contains only empty spaces or pieces of the same colour, then a score is given based on how many pieces are inside the search space
