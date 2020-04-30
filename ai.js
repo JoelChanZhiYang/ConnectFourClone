@@ -9,7 +9,7 @@ function randomChoice(board){
     return 6;
 }
 
-function minimax(board, depth, isMaximisingPlayer, first = true){
+function minimax(board, depth, isMaximisingPlayer, alpha, beta, first = true){
     // console.log(board, depth, isMaximisingPlayer)
 
     let available = []
@@ -21,7 +21,6 @@ function minimax(board, depth, isMaximisingPlayer, first = true){
 
     let thisTurn = isMaximisingPlayer ? "red": "blue"
     if (depth == 0 || checkBoard(board)){
-
         let score = evaluateBoard(board, thisTurn)
         // print(thisTurn, score,"score")
         return score
@@ -33,10 +32,14 @@ function minimax(board, depth, isMaximisingPlayer, first = true){
         for (let column of available){
             // console.log(column, thisTurn)
             board[column].push(thisTurn)
-            let eval = minimax(board, depth - 1, false, false)
+            let eval = minimax(board, depth - 1, false, alpha, beta, false)
             maxEval = max(eval, maxEval);
             if (eval == maxEval){
                 bestColumn = column
+            }
+            alpha = max(alpha, eval);
+            if (beta <= alpha){
+                break;
             }
             board[column].pop()
         }
@@ -54,10 +57,14 @@ function minimax(board, depth, isMaximisingPlayer, first = true){
         for (let column of available){
             // console.log(column, thisTurn)
             board[column].push(thisTurn)
-            let eval = minimax(board, depth - 1, true, false)
+            let eval = minimax(board, depth - 1, true,alpha, beta, false)
             minEval = min(eval, minEval);
             if (eval == minEval){
                 bestMinColumn = column
+            }
+            beta = min(beta, eval);
+            if (beta <= alpha){
+                break;
             }
             board[column].pop()
         }

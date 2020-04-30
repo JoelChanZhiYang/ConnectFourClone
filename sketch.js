@@ -1,11 +1,12 @@
-let HEIGHT = 620;
-let WIDTH = 525;
-let thickness = 75;
+let HEIGHT = 870;
+let WIDTH = 700;
+let thickness = 100;
 let ROWS = 6;
 let COLUMNS = 7;
 let board = [];
 let turn = "red";
 let isGameOver = false;
+let currentlyMakingMove = False;
 
 function setup(){
     createCanvas(WIDTH,HEIGHT);
@@ -25,7 +26,7 @@ function mouseReleased(){
     playerChoice = floor(mouseX/thickness)
     if (board[playerChoice].length < ROWS){  // checks whether the column is filled
         makeMove(playerChoice);
-        aiChoice = minimax(board, 4,  false); // choose the algorithm here
+        aiChoice = minimax(board, 5,  false); // choose the algorithm here
         // console.log(aiChoice)
         makeMove(aiChoice);
         // print(evaluateBoard(board, turn), turn, evaluateBoard(board, "red"))
@@ -126,7 +127,7 @@ function drawText(){
     if (turn === "red"){
         textSize(50);
         fill(200,200,200);
-        text("BLUE", 340, 65);
+        text("BLUE", 500, 65);
         fill(255, 0, 0);
         textSize(50);
         text("RED", 50, 65);
@@ -156,7 +157,7 @@ function drawInteractivePiece(){
             fill(0, 0, 255);
         }
         if (mouseX < WIDTH && mouseY < HEIGHT){
-            circle(floor(mouseX / thickness) * thickness + thickness / 2, 130, thickness - 10 )
+            circle(floor(mouseX / thickness) * thickness + thickness / 2,210, thickness - 10 )
         }
     }
 }
