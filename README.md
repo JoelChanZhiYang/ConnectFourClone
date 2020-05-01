@@ -35,7 +35,6 @@ For the sake of demonstration, assume that we are only searching to the right of
 
 1. If the search space contain a different coloured piece or the search space is out of bounds, then a score of **0** is given.
 
-<<<<<<< HEAD
 <img src = "./Assets/Score0.png" style="width: 300px;"/>
 
 2. If the search space contains only empty spaces or pieces of the same colour, then a score is given based on how many pieces are inside the search space.
@@ -49,9 +48,5 @@ For the sake of demonstration, assume that we are only searching to the right of
 ### Earlier Determination of Winning State
 We can determine one move earlier whether the next move will lead to a win by also checking whether there is a token underneath the empty space in the search tree. If there is a token under the empty space and the search space has 3 tokens, then the next move can be a winning move. This method make the search tree more shallow and prevents the AI from missing obvious moves.
 
-### The 
-=======
-<img src = "./Assets/Score0.png" style="width: 400px;"/>
-
-2. If the seerch space contains only empty spaces or pieces of the same colour, then a score is given based on how many pieces are inside the search space
->>>>>>> a3a397797d93f6f4db087f313c1e99e3beeb82d7
+### The importance of knowing the next move
+In order to have more accurate evaluation function, it is important for the function to know the p
