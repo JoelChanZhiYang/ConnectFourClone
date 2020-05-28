@@ -1,4 +1,10 @@
 # ConnectFourClone
+
+<!---
+ADD EXPLANATION OF MINIMAX AND ALPHA BETA PRUNIUNG
+ADD HOW THE EVALUATION HEURISTIC PREFERS THE CENTER COLUMN
+
+-->
 ## Summary
 Connect Four Clone is a board game simulation that was written in JavaScript. It uses the p5.js library for the interactive and graphcal elements. An artificial intelligence (AI) was implemented using the minimax algorithm, optimised with alpha-beta pruning.
 
