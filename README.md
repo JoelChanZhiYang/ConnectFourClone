@@ -59,7 +59,7 @@ In order to have more accurate evaluation function, it is important for the func
 
 For instance, the evaluation function would not favour any side if given a board state like this.
 
-<img src = "./Assets/nextTurnImportantExample.png" style="width: 300px;"/>
+<img src = "./Assets/nextTurnImportantExample.PNG" style="width: 300px;"/>
 
 However, it is clear that the player with the next move would win the game. Hence, by coding in the next turn, we can make more accurate predictions. 
 
