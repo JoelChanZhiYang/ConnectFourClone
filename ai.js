@@ -11,7 +11,6 @@ function randomChoice(board){
 
 function minimax(board, depth, isMaximisingPlayer, alpha, beta, first = true){
     // console.log(board, depth, isMaximisingPlayer)
-
     let available = []
     for (i = 0; i < COLUMNS; i++){
         if (board[i].length < 6){
@@ -153,7 +152,7 @@ function evaluatePiece(board, x, y , nextMove){
             out += twoMultiplier * color;
         } else if (number === 3){
             if (underneath[index] && board[x][y] == nextMove){
-                out += winMultiplier * color / 2
+                out += winMultiplier * color / 4
             } else {
                 out += threeMultiplier * color;
             }

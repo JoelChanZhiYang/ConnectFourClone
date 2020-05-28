@@ -6,7 +6,7 @@ let COLUMNS = 7;
 let board = [];
 let turn = "red";
 let isGameOver = false;
-let currentlyMakingMove = False;
+let currentlyMakingMove = false;
 
 function setup(){
     createCanvas(WIDTH,HEIGHT);
